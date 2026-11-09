@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FinFlow NEO - Cyber Budget</title>
-    <link rel="manifest" href="manifest.json">
+    <!-- Inline SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff88'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Embedded Manifest JSON -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"FinFlow NEO","short_name":"FinFlow","start_url":"./index.html","display":"standalone","background_color":"%23050b14","theme_color":"%2300ff88","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"%2300ff88\" style=\"background:%23050b14\"><rect width=\"512\" height=\"512\" fill=\"%23050b14\"/><path d=\"M256 50L50 150l206 100 206-100-206-100zM50 362l206 100 206-100M50 256l206 100 206-100\" stroke=\"%2300ff88\" stroke-width=\"20\"/></svg>","sizes":"512x512","type":"image/svg+xml"}]}'>
     <meta name="theme-color" content="#050b14">
+    
     <style>
         :root {
             --bg-deep: #050b14;
             --surface: #0e1726;
-            --surface-glass: rgba(14, 23, 38, 0.75);
-            --border: rgba(0, 255, 136, 0.15);
-            --border-focus: rgba(0, 255, 136, 0.5);
+            --surface-glass: rgba(14, 23, 38, 0.88);
+            --border: rgba(0, 255, 136, 0.2);
             --neon-green: #00ff88;
             --neon-red: #ff3366;
             --neon-blue: #00f0ff;
@@ -34,15 +38,12 @@
             min-height: 100vh;
             padding: 16px;
             background-image: 
-                radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(0, 255, 136, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
             padding-bottom: 90px;
         }
 
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-        }
+        .container { max-width: 480px; margin: 0 auto; }
 
         header {
             display: flex;
@@ -53,54 +54,27 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
 
         .cyber-logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,240,255,0.2));
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, rgba(0,255,136,0.25), rgba(0,240,255,0.25));
             border: 1.5px solid var(--neon-green);
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 15px rgba(0,255,136,0.3);
         }
 
-        .cyber-logo svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--neon-green);
-        }
+        .cyber-logo svg { width: 24px; height: 24px; fill: var(--neon-green); }
 
         .brand-title h1 {
-            font-size: 1.2rem;
-            font-weight: 800;
+            font-size: 1.2rem; font-weight: 800;
             background: linear-gradient(90deg, #fff, var(--neon-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .brand-title p {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .badge-offline {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: var(--neon-blue);
-            font-weight: 600;
-        }
+        .brand-title p { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
 
         .card {
             background: var(--surface-glass);
@@ -109,230 +83,123 @@
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 
         .status-badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
+            font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
         }
-        .status-badge.safe { background: rgba(0,255,136,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
-        .status-badge.danger { background: rgba(255,51,102,0.15); color: var(--neon-red); border: 1px solid rgba(255,51,102,0.3); }
+        .status-badge.safe { background: rgba(0,255,136,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.4); }
+        .status-badge.danger { background: rgba(255,51,102,0.15); color: var(--neon-red); border: 1px solid rgba(255,51,102,0.4); }
 
-        .big-nominal {
-            font-size: 1.8rem;
-            font-weight: 800;
-            font-family: monospace;
-            margin-bottom: 12px;
-        }
-        .big-nominal.safe { color: var(--neon-green); }
-        .big-nominal.danger { color: var(--neon-red); }
+        .big-nominal { font-size: 1.8rem; font-weight: 800; font-family: monospace; margin-bottom: 12px; }
+        .big-nominal.safe { color: var(--neon-green); text-shadow: 0 0 15px rgba(0,255,136,0.2); }
+        .big-nominal.danger { color: var(--neon-red); text-shadow: 0 0 15px rgba(255,51,102,0.2); }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06);
         }
 
-        .stat-item label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 2px;
-        }
-        .stat-item val {
-            font-size: 0.95rem;
-            font-weight: 700;
-            font-family: monospace;
-        }
+        .stat-item label { font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 2px; }
+        .stat-item val { font-size: 0.95rem; font-weight: 700; font-family: monospace; }
 
         .progress-bar-container {
-            height: 8px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            margin: 12px 0 6px 0;
-            gap: 2px;
+            height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px;
+            overflow: hidden; display: flex; margin: 12px 0 6px 0; gap: 2px;
         }
-        .progress-segment {
-            height: 100%;
-            transition: width 0.4s ease;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .section-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
+        .progress-segment { height: 100%; transition: width 0.4s ease; }
 
         .btn-cyber {
             background: linear-gradient(135deg, var(--neon-green), #00acc1);
-            color: #050b14;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            cursor: pointer;
+            color: #050b14; border: none; padding: 6px 12px; border-radius: 8px;
+            font-weight: 700; font-size: 0.7rem; cursor: pointer;
         }
 
-        .expense-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 380px;
-            overflow-y: auto;
+        .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .btn-tool {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: var(--text-main); padding: 10px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
+        .btn-tool:hover { background: rgba(0,255,136,0.1); border-color: var(--neon-green); }
+
+        /* Folder Category Styling */
+        .folder-group { margin-bottom: 16px; }
+        .folder-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px; background: rgba(0, 255, 136, 0.06);
+            border-left: 3px solid var(--neon-green); border-radius: 6px; margin-bottom: 8px;
+        }
+        .folder-title { font-size: 0.85rem; font-weight: 700; color: var(--neon-green); display: flex; align-items: center; gap: 6px; }
+        .folder-actions { display: flex; gap: 8px; }
+        .folder-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.75rem; }
+        .folder-btn:hover { color: var(--text-main); }
+
+        .expense-list { display: flex; flex-direction: column; gap: 8px; }
 
         .expense-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
         }
 
-        .expense-info h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        .expense-info .meta {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .expense-info h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+        .expense-info .meta { font-size: 0.7rem; color: var(--text-muted); }
 
-        .expense-amount-wrap {
-            text-align: right;
-        }
-        .expense-amount {
-            font-family: monospace;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--neon-blue);
-        }
-        .expense-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 4px;
-            justify-content: flex-end;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .expense-amount-wrap { text-align: right; }
+        .expense-amount { font-family: monospace; font-size: 0.9rem; font-weight: 700; color: var(--neon-blue); }
+        .expense-actions { display: flex; gap: 8px; margin-top: 4px; justify-content: flex-end; }
+        .action-btn { background: none; border: none; cursor: pointer; font-size: 0.75rem; color: var(--text-muted); }
         .action-btn.edit:hover { color: var(--neon-green); }
         .action-btn.delete:hover { color: var(--neon-red); }
 
+        /* Modal & Receipt Styling */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: flex-end; z-index: 1000;
         }
         .modal-overlay.active { display: flex; }
 
         .modal-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 480px;
-            border-radius: 20px 20px 0 0;
-            padding: 20px;
+            background: var(--surface); border: 1px solid var(--border);
+            width: 100%; max-width: 480px; border-radius: 20px 20px 0 0;
+            padding: 20px; max-height: 90vh; overflow-y: auto;
         }
 
-        .form-group {
-            margin-bottom: 12px;
+        .receipt-container {
+            background: #ffffff; color: #1e293b; border-radius: 12px;
+            padding: 20px; font-family: monospace; margin-bottom: 16px;
         }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
+        .receipt-header { text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 12px; margin-bottom: 12px; }
+        .receipt-header h2 { font-size: 1.1rem; color: #0f172a; font-weight: 800; }
+        .receipt-header p { font-size: 0.7rem; color: #64748b; }
+        .receipt-body { font-size: 0.8rem; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .receipt-divider { border-top: 1px dashed #cbd5e1; margin: 10px 0; }
+        .receipt-total { font-size: 0.95rem; font-weight: bold; color: #0f172a; }
+        .receipt-footer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 16px; border-top: 2px dashed #cbd5e1; padding-top: 10px; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
         .form-control {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 0.9rem; outline: none;
         }
 
-        .modal-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 16px;
-        }
-        .btn-secondary {
-            background: rgba(255,255,255,0.08);
-            color: var(--text-main);
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background: var(--neon-green);
-            color: #050b14;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+        .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text-main); border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: var(--neon-green); color: #050b14; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
         .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--neon-green);
-            color: #050b14;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(0,255,136,0.5);
-            border: none;
-            cursor: pointer;
-            z-index: 99;
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--neon-green); color: #050b14; width: 56px; height: 56px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: bold; box-shadow: 0 0 20px rgba(0,255,136,0.5);
+            border: none; cursor: pointer; z-index: 99;
         }
     </style>
 </head>
@@ -346,10 +213,10 @@
             </div>
             <div class="brand-title">
                 <h1>FinFlow NEO</h1>
-                <p>Cyber Budget v2.5</p>
+                <p>Cyber Budget v4.0</p>
             </div>
         </div>
-        <div class="badge-offline">⚡ Offline Ready</div>
+        <button class="btn-cyber" onclick="openIncomeModal()">⚙️ Gaji</button>
     </header>
 
     <div class="card">
@@ -373,22 +240,78 @@
         </div>
     </div>
 
+    <div class="toolbar-actions">
+        <button class="btn-tool" onclick="openReceiptModal()">🧾 Cetak Struk</button>
+        <button class="btn-tool" onclick="exportToCSV()">📥 Ekspor CSV</button>
+    </div>
+
     <div class="card">
-        <div class="section-header">
-            <div class="section-title">📁 Rincian Pengeluaran & Anabul</div>
-            <button class="btn-cyber" onclick="openIncomeModal()">⚙️ Gaji</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 0.9rem; font-weight: 700;">📁 Folder & Pengeluaran</span>
+            <button class="btn-tool" style="padding: 4px 8px; font-size: 0.7rem;" onclick="openAddFolderModal()">+ Folder Baru</button>
         </div>
-        <div class="expense-list" id="expenseListContainer"></div>
+        <div id="foldersContainer"></div>
     </div>
 </div>
 
 <button class="fab" onclick="openAddModal()">+</button>
 
+<!-- Modal Cetak Struk -->
+<div class="modal-overlay" id="receiptModal">
+    <div class="modal-card">
+        <h3 style="font-size: 1rem; margin-bottom: 12px; color: var(--neon-green); text-align: center;">Bukti Transaksi Keuangan</h3>
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h2>FINFLOW NEO E-STATEMENT</h2>
+                <p>CYBER SECURE BUDGETING SYSTEM</p>
+            </div>
+            <div class="receipt-body">
+                <div class="receipt-row"><span>No. Ref:</span> <span id="recRef">FF-98234102</span></div>
+                <div class="receipt-row"><span>Waktu:</span> <span id="recDate">09 Nov 2026</span></div>
+                <div class="receipt-row"><span>Status:</span> <span id="recStatus" style="font-weight:bold; color:#16a34a;">BERHASIL (AMAN)</span></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row"><span>Total Pendapatan:</span> <span id="recIncome">Rp2.800.000</span></div>
+                <div class="receipt-row"><span>Total Pengeluaran:</span> <span id="recExpense">Rp0</span></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row receipt-total"><span>Sisa Saldo:</span> <span id="recBalance">Rp0</span></div>
+            </div>
+            <div class="receipt-footer">
+                <p>Terima kasih telah mengelola keuangan dengan bijak.</p>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-secondary" onclick="closeReceiptModal()">Tutup</button>
+            <button class="btn-primary" onclick="window.print()">Cetak / Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah/Edit Folder Kategori -->
+<div class="modal-overlay" id="folderModal">
+    <div class="modal-card">
+        <h3 id="folderModalTitle" style="font-size: 1.1rem; margin-bottom: 14px; color: var(--neon-green);">Kelola Folder</h3>
+        <input type="hidden" id="editFolderIndex" value="-1">
+        <div class="form-group">
+            <label>Nama Folder / Kategori</label>
+            <input type="text" id="folderNameInput" class="form-control" placeholder="Contoh: Anabul & Hobi">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-secondary" onclick="closeFolderModal()">Batal</button>
+            <button class="btn-primary" onclick="saveFolder()">Simpan Folder</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add/Edit Expense -->
 <div class="modal-overlay" id="expenseModal">
     <div class="modal-card">
         <h3 id="modalTitle" style="font-size: 1.1rem; margin-bottom: 14px; color: var(--neon-green);">Tambah Pengeluaran</h3>
         <input type="hidden" id="editIndex" value="-1">
         
+        <div class="form-group">
+            <label>Folder / Kategori</label>
+            <select id="expCategory" class="form-control"></select>
+        </div>
         <div class="form-group">
             <label>Nama Pengeluaran</label>
             <input type="text" id="expName" class="form-control" placeholder="Contoh: Rokok, Pasir Kucing...">
@@ -414,6 +337,7 @@
     </div>
 </div>
 
+<!-- Modal Income Edit -->
 <div class="modal-overlay" id="incomeModal">
     <div class="modal-card">
         <h3 style="font-size: 1.1rem; margin-bottom: 14px; color: var(--neon-green);">Atur Pendapatan Bulanan</h3>
@@ -429,16 +353,22 @@
 </div>
 
 <script>
-let appData = JSON.parse(localStorage.getItem('finflow_cyber_data')) || {
+let appData = JSON.parse(localStorage.getItem('finflow_cyber_data_v4')) || {
     income: 2800000,
+    folders: [
+        "Makan & Kebutuhan Pokok",
+        "Tempat Tinggal & Transport",
+        "Kebutuhan Lain & Komunikasi",
+        "Hewan Peliharaan & Rokok"
+    ],
     expenses: [
-        { name: "Makan Harian", nominal: 20000, freq: "daily", labelFreq: "1 hari 1x" },
-        { name: "Kost / Kontrakan", nominal: 120900, freq: "monthly", labelFreq: "Bulanan" },
-        { name: "Transportasi / Bensin", nominal: 32158, freq: "daily", labelFreq: "1 hari 1x" },
-        { name: "Rokok", nominal: 25000, freq: "daily", labelFreq: "1 hari 1x" },
-        { name: "Pasir Kucing", nominal: 30000, freq: "every10days", labelFreq: "10 hari sekali" },
-        { name: "Makanan Kucing", nominal: 15000, freq: "every3days", labelFreq: "3 hari sekali" },
-        { name: "Paket Data / Pulsa", nominal: 40000, freq: "monthly", labelFreq: "Bulanan" }
+        { name: "Makan Harian", nominal: 20000, freq: "daily", labelFreq: "1 hari 1x", category: "Makan & Kebutuhan Pokok" },
+        { name: "Kost / Kontrakan", nominal: 120900, freq: "monthly", labelFreq: "Bulanan", category: "Tempat Tinggal & Transport" },
+        { name: "Transportasi / Bensin", nominal: 32158, freq: "daily", labelFreq: "1 hari 1x", category: "Tempat Tinggal & Transport" },
+        { name: "Rokok", nominal: 25000, freq: "daily", labelFreq: "1 hari 1x", category: "Hewan Peliharaan & Rokok" },
+        { name: "Pasir Kucing", nominal: 30000, freq: "every10days", labelFreq: "10 hari sekali", category: "Hewan Peliharaan & Rokok" },
+        { name: "Makanan Kucing", nominal: 15000, freq: "every3days", labelFreq: "3 hari sekali", category: "Hewan Peliharaan & Rokok" },
+        { name: "Paket Data / Pulsa", nominal: 40000, freq: "monthly", labelFreq: "Bulanan", category: "Kebutuhan Lain & Komunikasi" }
     ]
 };
 
@@ -455,44 +385,64 @@ function calculateMultiplier(freq) {
     }
 }
 
-function formatRupiah(num) {
-    return 'Rp' + num.toLocaleString('id-ID');
-}
+function formatRupiah(num) { return 'Rp' + num.toLocaleString('id-ID'); }
 
 function saveData() {
-    localStorage.setItem('finflow_cyber_data', JSON.stringify(appData));
+    localStorage.setItem('finflow_cyber_data_v4', JSON.stringify(appData));
     renderApp();
 }
 
 function renderApp() {
     let totalExpense = 0;
-    let listHTML = '';
     let barHTML = '';
 
-    appData.expenses.forEach((item) => {
+    appData.expenses.forEach(item => {
         totalExpense += item.nominal * calculateMultiplier(item.freq);
     });
 
-    appData.expenses.forEach((item, index) => {
-        let monthlyTotal = item.nominal * calculateMultiplier(item.freq);
-        let percentage = totalExpense > 0 ? (monthlyTotal / totalExpense) * 100 : 0;
-        let color = colors[index % colors.length];
+    let foldersHTML = '';
 
-        barHTML += `<div class="progress-segment" style="width: ${percentage}%; background-color: ${color};"></div>`;
+    appData.folders.forEach((folder, fIndex) => {
+        let folderItems = appData.expenses.filter(e => e.category === folder);
+        let folderTotal = 0;
 
-        listHTML += `
-            <div class="expense-card" style="border-left: 3px solid ${color};">
-                <div class="expense-info">
-                    <h4>${item.name}</h4>
-                    <div class="meta">${item.labelFreq || item.freq} (${formatRupiah(item.nominal)})</div>
-                </div>
-                <div class="expense-amount-wrap">
-                    <div class="expense-amount">${formatRupiah(monthlyTotal)}</div>
-                    <div class="expense-actions">
-                        <button class="action-btn edit" onclick="editExpense(${index})">Edit</button>
-                        <button class="action-btn delete" onclick="deleteExpense(${index})">Hapus</button>
+        let itemsHTML = '';
+        folderItems.forEach((item) => {
+            let itemIndex = appData.expenses.indexOf(item);
+            let monthlyTotal = item.nominal * calculateMultiplier(item.freq);
+            folderTotal += monthlyTotal;
+            let color = colors[itemIndex % colors.length];
+
+            itemsHTML += `
+                <div class="expense-card" style="border-left: 3px solid ${color};">
+                    <div class="expense-info">
+                        <h4>${item.name}</h4>
+                        <div class="meta">${item.labelFreq || item.freq} (${formatRupiah(item.nominal)})</div>
+                    </div>
+                    <div class="expense-amount-wrap">
+                        <div class="expense-amount">${formatRupiah(monthlyTotal)}</div>
+                        <div class="expense-actions">
+                            <button class="action-btn edit" onclick="editExpense(${itemIndex})">Edit</button>
+                            <button class="action-btn delete" onclick="deleteExpense(${itemIndex})">Hapus</button>
+                        </div>
                     </div>
                 </div>
+            `;
+        });
+
+        let percentage = totalExpense > 0 ? (folderTotal / totalExpense) * 100 : 0;
+        barHTML += `<div class="progress-segment" style="width: ${percentage}%; background-color: ${colors[fIndex % colors.length]};"></div>`;
+
+        foldersHTML += `
+            <div class="folder-group">
+                <div class="folder-header">
+                    <div class="folder-title">📂 ${folder} <span style="font-size:0.7rem; color:var(--text-muted);">(${formatRupiah(folderTotal)})</span></div>
+                    <div class="folder-actions">
+                        <button class="folder-btn" onclick="editFolder(${fIndex})">✏️ Edit Folder</button>
+                        <button class="folder-btn" onclick="deleteFolder(${fIndex})">🗑️</button>
+                    </div>
+                </div>
+                <div class="expense-list">${itemsHTML || '<div style="font-size:0.7rem; color:var(--text-muted); padding:4px;">Belum ada pengeluaran di folder ini</div>'}</div>
             </div>
         `;
     });
@@ -508,24 +458,87 @@ function renderApp() {
     let sisaEl = document.getElementById('sisaVal');
 
     if (sisa < 0) {
-        badge.className = "status-badge danger";
-        badge.innerText = "DEFISIT";
-        sisaEl.className = "big-nominal danger";
+        badge.className = "status-badge danger"; badge.innerText = "DEFISIT"; sisaEl.className = "big-nominal danger";
     } else {
-        badge.className = "status-badge safe";
-        badge.innerText = "AMAN";
-        sisaEl.className = "big-nominal safe";
+        badge.className = "status-badge safe"; badge.innerText = "AMAN"; sisaEl.className = "big-nominal safe";
     }
 
-    document.getElementById('expenseListContainer').innerHTML = listHTML;
+    document.getElementById('foldersContainer').innerHTML = foldersHTML;
 }
 
+// Folder Management
+function openAddFolderModal() {
+    document.getElementById('folderModalTitle').innerText = "Tambah Folder Baru";
+    document.getElementById('editFolderIndex').value = "-1";
+    document.getElementById('folderNameInput').value = "";
+    document.getElementById('folderModal').classList.add('active');
+}
+
+function editFolder(index) {
+    document.getElementById('folderModalTitle').innerText = "Edit Nama Folder";
+    document.getElementById('editFolderIndex').value = index;
+    document.getElementById('folderNameInput').value = appData.folders[index];
+    document.getElementById('folderModal').classList.add('active');
+}
+
+function closeFolderModal() { document.getElementById('folderModal').classList.remove('active'); }
+
+function saveFolder() {
+    let index = parseInt(document.getElementById('editFolderIndex').value);
+    let newName = document.getElementById('folderNameInput').value.trim();
+
+    if (!newName) { alert("Nama folder tidak boleh kosong!"); return; }
+
+    if (index === -1) {
+        appData.folders.push(newName);
+    } else {
+        let oldName = appData.folders[index];
+        appData.folders[index] = newName;
+        // Update item category names
+        appData.expenses.forEach(item => {
+            if (item.category === oldName) item.category = newName;
+        });
+    }
+
+    saveData();
+    closeFolderModal();
+}
+
+function deleteFolder(index) {
+    let folderName = appData.folders[index];
+    if (confirm(`Hapus folder "${folderName}"? Item di dalamnya akan dipindah ke folder pertama.`)) {
+        appData.folders.splice(index, 1);
+        let fallbackFolder = appData.folders[0] || "Umum";
+        if (appData.folders.length === 0) appData.folders.push("Umum");
+
+        appData.expenses.forEach(item => {
+            if (item.category === folderName) item.category = fallbackFolder;
+        });
+        saveData();
+    }
+}
+
+// Populate Category Options for Expense Modal
+function updateCategoryDropdown(selectedCategory) {
+    let select = document.getElementById('expCategory');
+    select.innerHTML = '';
+    appData.folders.forEach(f => {
+        let opt = document.createElement('option');
+        opt.value = f;
+        opt.innerText = f;
+        if (f === selectedCategory) opt.selected = true;
+        select.appendChild(opt);
+    });
+}
+
+// Modal Expense Controls
 function openAddModal() {
     document.getElementById('modalTitle').innerText = "Tambah Pengeluaran Baru";
     document.getElementById('editIndex').value = "-1";
     document.getElementById('expName').value = "";
     document.getElementById('expNominal').value = "";
     document.getElementById('expFreq').value = "daily";
+    updateCategoryDropdown(appData.folders[0]);
     document.getElementById('expenseModal').classList.add('active');
 }
 
@@ -536,39 +549,30 @@ function editExpense(index) {
     document.getElementById('expName').value = item.name;
     document.getElementById('expNominal').value = item.nominal;
     document.getElementById('expFreq').value = item.freq;
+    updateCategoryDropdown(item.category);
     document.getElementById('expenseModal').classList.add('active');
 }
 
-function closeModal() {
-    document.getElementById('expenseModal').classList.remove('active');
-}
+function closeModal() { document.getElementById('expenseModal').classList.remove('active'); }
 
 function saveExpense() {
     let index = parseInt(document.getElementById('editIndex').value);
     let name = document.getElementById('expName').value.trim();
     let nominal = parseFloat(document.getElementById('expNominal').value) || 0;
     let freq = document.getElementById('expFreq').value;
+    let category = document.getElementById('expCategory').value;
     
     let freqLabels = {
-        'daily': '1 hari 1x',
-        'every3days': '3 hari sekali',
-        'every10days': '10 hari sekali',
-        'weekly': 'Mingguan',
-        'monthly': 'Bulanan'
+        'daily': '1 hari 1x', 'every3days': '3 hari sekali',
+        'every10days': '10 hari sekali', 'weekly': 'Mingguan', 'monthly': 'Bulanan'
     };
 
-    if (!name || nominal <= 0) {
-        alert('Mohon isi nama dan nominal dengan benar!');
-        return;
-    }
+    if (!name || nominal <= 0) { alert('Mohon isi nama dan nominal dengan benar!'); return; }
 
-    let newItem = { name, nominal, freq, labelFreq: freqLabels[freq] };
+    let newItem = { name, nominal, freq, labelFreq: freqLabels[freq], category };
 
-    if (index === -1) {
-        appData.expenses.push(newItem);
-    } else {
-        appData.expenses[index] = newItem;
-    }
+    if (index === -1) { appData.expenses.push(newItem); }
+    else { appData.expenses[index] = newItem; }
 
     saveData();
     closeModal();
@@ -581,26 +585,62 @@ function deleteExpense(index) {
     }
 }
 
+// Receipts & CSV
+function openReceiptModal() {
+    let totalExpense = 0;
+    appData.expenses.forEach(item => { totalExpense += item.nominal * calculateMultiplier(item.freq); });
+    let sisa = appData.income - totalExpense;
+
+    document.getElementById('recRef').innerText = 'FF-' + Math.floor(10000000 + Math.random() * 90000000);
+    let now = new Date();
+    document.getElementById('recDate').innerText = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    let statusEl = document.getElementById('recStatus');
+    if (sisa < 0) { statusEl.innerText = "DEFISIT (MINUS)"; statusEl.style.color = "#dc2626"; }
+    else { statusEl.innerText = "BERHASIL (AMAN)"; statusEl.style.color = "#16a34a"; }
+
+    document.getElementById('recIncome').innerText = formatRupiah(appData.income);
+    document.getElementById('recExpense').innerText = formatRupiah(totalExpense);
+    document.getElementById('recBalance').innerText = formatRupiah(sisa);
+
+    document.getElementById('receiptModal').classList.add('active');
+}
+function closeReceiptModal() { document.getElementById('receiptModal').classList.remove('active'); }
+
+function exportToCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,Folder,Nama Pengeluaran,Nominal Satuan,Frekuensi,Total Per Bulan\n";
+    appData.expenses.forEach(item => {
+        let mult = calculateMultiplier(item.freq);
+        csvContent += `"${item.category}","${item.name}",${item.nominal},"${item.labelFreq || item.freq}",${item.nominal * mult}\n`;
+    });
+    csvContent += `\nTotal Pendapatan,,,, "${appData.income}"\n`;
+
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "finflow_laporan_folder.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 function openIncomeModal() {
     document.getElementById('inputIncomeVal').value = appData.income;
     document.getElementById('incomeModal').classList.add('active');
 }
-function closeIncomeModal() {
-    document.getElementById('incomeModal').classList.remove('active');
-}
+function closeIncomeModal() { document.getElementById('incomeModal').classList.remove('active'); }
 function saveIncome() {
     let inc = parseFloat(document.getElementById('inputIncomeVal').value);
-    if (inc > 0) {
-        appData.income = inc;
-        saveData();
-    }
+    if (inc > 0) { appData.income = inc; saveData(); }
     closeIncomeModal();
 }
 
 renderApp();
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    const swCode = `self.addEventListener('fetch', e => {});`;
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
 }
 </script>
 
