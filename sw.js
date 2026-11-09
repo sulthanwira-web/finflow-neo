@@ -1,9 +1,9 @@
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open('finflow-v1').then((cache) => {
-      return cache.addAll(['./index.html', './manifest.json']);
-    })
-  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (e) => {
+  e.clients.claim();
 });
 
 self.addEventListener('fetch', (e) => {
