@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FinFlow NEO - Cyber Budget</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#050b14">
+    <style>
+        :root {
+            --bg-deep: #050b14;
+            --surface: #0e1726;
+            --surface-glass: rgba(14, 23, 38, 0.75);
+            --border: rgba(0, 255, 136, 0.15);
+            --border-focus: rgba(0, 255, 136, 0.5);
+            --neon-green: #00ff88;
+            --neon-red: #ff3366;
+            --neon-blue: #00f0ff;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 16px;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 255, 136, 0.05) 0%, transparent 40%);
+            padding-bottom: 90px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cyber-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,240,255,0.2));
+            border: 1.5px solid var(--neon-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0,255,136,0.3);
+        }
+
+        .cyber-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--neon-green);
+        }
+
+        .brand-title h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge-offline {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .status-badge.safe { background: rgba(0,255,136,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
+        .status-badge.danger { background: rgba(255,51,102,0.15); color: var(--neon-red); border: 1px solid rgba(255,51,102,0.3); }
+
+        .big-nominal {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: monospace;
+            margin-bottom: 12px;
+        }
+        .big-nominal.safe { color: var(--neon-green); }
+        .big-nominal.danger { color: var(--neon-red); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 2px;
+        }
+        .stat-item val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            margin: 12px 0 6px 0;
+            gap: 2px;
+        }
+        .progress-segment {
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-cyber {
+            background: linear-gradient(135deg, var(--neon-green), #00acc1);
+            color: #050b14;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .expense-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .expense-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expense-info h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .expense-info .meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .expense-amount-wrap {
+            text-align: right;
+        }
+        .expense-amount {
+            font-family: monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+        }
+        .expense-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+            justify-content: flex-end;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .action-btn.edit:hover { color: var(--neon-green); }
+        .action-btn.delete:hover { color: var(--neon-red); }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .form-control {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-main);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--neon-green);
+            color: #050b14;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--neon-green);
+            color: #050b14;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0,255,136,0.5);
+            border: none;
+            cursor: pointer;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo-area">
+            <div class="cyber-logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="brand-title">
+                <h1>FinFlow NEO</h1>
+                <p>Cyber Budget v2.5</p>
+            </div>
+        </div>
+        <div class="badge-offline">⚡ Offline Ready</div>
+    </header>
+
+    <div class="card">
+        <div class="status-header">
+            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Sisa Saldo Operasional</span>
+            <div id="statusBadge" class="status-badge safe">AMAN</div>
+        </div>
+        <div id="sisaVal" class="big-nominal safe">Rp0</div>
+
+        <div class="progress-bar-container" id="breakdownBar"></div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <label>Pendapatan (Gaji)</label>
+                <val id="incomeDisplay" style="color: var(--neon-green);">Rp2.800.000</val>
+            </div>
+            <div class="stat-item" style="text-align: right;">
+                <label>Total Pengeluaran</label>
+                <val id="expenseDisplay" style="color: var(--neon-red);">Rp0</val>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-header">
+            <div class="section-title">📁 Rincian Pengeluaran & Anabul</div>
+            <button class="btn-cyber" onclick="openIncomeModal()">⚙️ Gaji</button>
+        </div>
+        <div class="expense-list" id="expenseListContainer"></div>
+    </div>
+</div>
+
+<button class="fab" onclick="openAddModal()">+</button>
+
+<div class="modal-overlay" id="expenseModal">
+    <div class="modal-card">
+        <h3 id="modalTitle" style="font-size: 1.1rem; margin-bottom: 14px; color: var(--neon-green);">Tambah Pengeluaran</h3>
+        <input type="hidden" id="editIndex" value="-1">
+        
+        <div class="form-group">
+            <label>Nama Pengeluaran</label>
+            <input type="text" id="expName" class="form-control" placeholder="Contoh: Rokok, Pasir Kucing...">
+        </div>
+        <div class="form-group">
+            <label>Nominal (Rp)</label>
+            <input type="number" id="expNominal" class="form-control" placeholder="25000">
+        </div>
+        <div class="form-group">
+            <label>Frekuensi Pengulangan</label>
+            <select id="expFreq" class="form-control">
+                <option value="daily">Harian (x30 per bulan)</option>
+                <option value="every3days">Setiap 3 Hari (x10 per bulan)</option>
+                <option value="every10days">Setiap 10 Hari (x3 per bulan)</option>
+                <option value="weekly">Mingguan (x4 per bulan)</option>
+                <option value="monthly">Bulanan Sekali (x1)</option>
+            </select>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-secondary" onclick="closeModal()">Batal</button>
+            <button class="btn-primary" onclick="saveExpense()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="incomeModal">
+    <div class="modal-card">
+        <h3 style="font-size: 1.1rem; margin-bottom: 14px; color: var(--neon-green);">Atur Pendapatan Bulanan</h3>
+        <div class="form-group">
+            <label>Gaji / Pemasukan Utama (Rp)</label>
+            <input type="number" id="inputIncomeVal" class="form-control" value="2800000">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-secondary" onclick="closeIncomeModal()">Batal</button>
+            <button class="btn-primary" onclick="saveIncome()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let appData = JSON.parse(localStorage.getItem('finflow_cyber_data')) || {
+    income: 2800000,
+    expenses: [
+        { name: "Makan Harian", nominal: 20000, freq: "daily", labelFreq: "1 hari 1x" },
+        { name: "Kost / Kontrakan", nominal: 120900, freq: "monthly", labelFreq: "Bulanan" },
+        { name: "Transportasi / Bensin", nominal: 32158, freq: "daily", labelFreq: "1 hari 1x" },
+        { name: "Rokok", nominal: 25000, freq: "daily", labelFreq: "1 hari 1x" },
+        { name: "Pasir Kucing", nominal: 30000, freq: "every10days", labelFreq: "10 hari sekali" },
+        { name: "Makanan Kucing", nominal: 15000, freq: "every3days", labelFreq: "3 hari sekali" },
+        { name: "Paket Data / Pulsa", nominal: 40000, freq: "monthly", labelFreq: "Bulanan" }
+    ]
+};
+
+const colors = ['#00ff88', '#00f0ff', '#b000ff', '#ff3366', '#ffaa00', '#33ccff'];
+
+function calculateMultiplier(freq) {
+    switch(freq) {
+        case 'daily': return 30;
+        case 'every3days': return 10;
+        case 'every10days': return 3;
+        case 'weekly': return 4;
+        case 'monthly': return 1;
+        default: return 1;
+    }
+}
+
+function formatRupiah(num) {
+    return 'Rp' + num.toLocaleString('id-ID');
+}
+
+function saveData() {
+    localStorage.setItem('finflow_cyber_data', JSON.stringify(appData));
+    renderApp();
+}
+
+function renderApp() {
+    let totalExpense = 0;
+    let listHTML = '';
+    let barHTML = '';
+
+    appData.expenses.forEach((item) => {
+        totalExpense += item.nominal * calculateMultiplier(item.freq);
+    });
+
+    appData.expenses.forEach((item, index) => {
+        let monthlyTotal = item.nominal * calculateMultiplier(item.freq);
+        let percentage = totalExpense > 0 ? (monthlyTotal / totalExpense) * 100 : 0;
+        let color = colors[index % colors.length];
+
+        barHTML += `<div class="progress-segment" style="width: ${percentage}%; background-color: ${color};"></div>`;
+
+        listHTML += `
+            <div class="expense-card" style="border-left: 3px solid ${color};">
+                <div class="expense-info">
+                    <h4>${item.name}</h4>
+                    <div class="meta">${item.labelFreq || item.freq} (${formatRupiah(item.nominal)})</div>
+                </div>
+                <div class="expense-amount-wrap">
+                    <div class="expense-amount">${formatRupiah(monthlyTotal)}</div>
+                    <div class="expense-actions">
+                        <button class="action-btn edit" onclick="editExpense(${index})">Edit</button>
+                        <button class="action-btn delete" onclick="deleteExpense(${index})">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    let sisa = appData.income - totalExpense;
+
+    document.getElementById('incomeDisplay').innerText = formatRupiah(appData.income);
+    document.getElementById('expenseDisplay').innerText = formatRupiah(totalExpense);
+    document.getElementById('sisaVal').innerText = formatRupiah(sisa);
+    document.getElementById('breakdownBar').innerHTML = barHTML;
+
+    let badge = document.getElementById('statusBadge');
+    let sisaEl = document.getElementById('sisaVal');
+
+    if (sisa < 0) {
+        badge.className = "status-badge danger";
+        badge.innerText = "DEFISIT";
+        sisaEl.className = "big-nominal danger";
+    } else {
+        badge.className = "status-badge safe";
+        badge.innerText = "AMAN";
+        sisaEl.className = "big-nominal safe";
+    }
+
+    document.getElementById('expenseListContainer').innerHTML = listHTML;
+}
+
+function openAddModal() {
+    document.getElementById('modalTitle').innerText = "Tambah Pengeluaran Baru";
+    document.getElementById('editIndex').value = "-1";
+    document.getElementById('expName').value = "";
+    document.getElementById('expNominal').value = "";
+    document.getElementById('expFreq').value = "daily";
+    document.getElementById('expenseModal').classList.add('active');
+}
+
+function editExpense(index) {
+    let item = appData.expenses[index];
+    document.getElementById('modalTitle').innerText = "Edit Pengeluaran";
+    document.getElementById('editIndex').value = index;
+    document.getElementById('expName').value = item.name;
+    document.getElementById('expNominal').value = item.nominal;
+    document.getElementById('expFreq').value = item.freq;
+    document.getElementById('expenseModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('expenseModal').classList.remove('active');
+}
+
+function saveExpense() {
+    let index = parseInt(document.getElementById('editIndex').value);
+    let name = document.getElementById('expName').value.trim();
+    let nominal = parseFloat(document.getElementById('expNominal').value) || 0;
+    let freq = document.getElementById('expFreq').value;
+    
+    let freqLabels = {
+        'daily': '1 hari 1x',
+        'every3days': '3 hari sekali',
+        'every10days': '10 hari sekali',
+        'weekly': 'Mingguan',
+        'monthly': 'Bulanan'
+    };
+
+    if (!name || nominal <= 0) {
+        alert('Mohon isi nama dan nominal dengan benar!');
+        return;
+    }
+
+    let newItem = { name, nominal, freq, labelFreq: freqLabels[freq] };
+
+    if (index === -1) {
+        appData.expenses.push(newItem);
+    } else {
+        appData.expenses[index] = newItem;
+    }
+
+    saveData();
+    closeModal();
+}
+
+function deleteExpense(index) {
+    if (confirm('Yakin ingin menghapus item ini?')) {
+        appData.expenses.splice(index, 1);
+        saveData();
+    }
+}
+
+function openIncomeModal() {
+    document.getElementById('inputIncomeVal').value = appData.income;
+    document.getElementById('incomeModal').classList.add('active');
+}
+function closeIncomeModal() {
+    document.getElementById('incomeModal').classList.remove('active');
+}
+function saveIncome() {
+    let inc = parseFloat(document.getElementById('inputIncomeVal').value);
+    if (inc > 0) {
+        appData.income = inc;
+        saveData();
+    }
+    closeIncomeModal();
+}
+
+renderApp();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
