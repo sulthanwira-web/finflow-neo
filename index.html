@@ -640,12 +640,15 @@ function saveIncome() {
 
 renderApp();
 
-if ('serviceWorker' in navigator) {
-    const swCode = `self.addEventListener('fetch', e => {});`;
-    const blob = new Blob([swCode], { type: 'application/javascript' });
-    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-}
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('SW Registered!'))
+        .catch((err) => console.log('SW Failed:', err));
+    });
+  }
 </script>
+
 
 </body>
 </html>
